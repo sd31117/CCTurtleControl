@@ -6,22 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web sockets</title>
     <script>
-        const ws = new WebSocket("ws://10.0.0.158:7777")
-        function moveTurtleForward() {
+        //open new websocket
+        const ws = new WebSocket("ws://10.0.0.69:7777")
+        
+        //movement functions
+        function moveTurtleForwards() { //move the turtle forwards
             ws.send("return turtle.forward()")
         }
-        ws.addEventListener("message",msg=>{
-            console.log(msg.data)
-        })
+        function rotateTurtleLeft() { //rotate the turtle counter-clockwise
+            ws.send("return turtle.turnLeft()")
+        }
+        function rotateTurtleRight() { //rotate the turtle clockwise
+            ws.send("return turtle.turnRight()")
+        }
+        function moveTurtleBackwards() { //move the turtle backwards
+            ws.send("return turtle.back()")
+        }
+        function moveTurtleUp() { //move the turtle up
+            ws.send("return turtle.up()")
+        }
+        function moveTurtleDown() { //move the turtle down
+            ws.send("return turtle.down()")
+        }
 
-        function sendCmd() {
+        //other functions
+        function sendCmd() { //send a lua command directly to the turtle
             var cmd = document.getElementById("cmdBox").value
             ws.send("return " + cmd)
         }
+
+        //to see messages being broadcasted from the server on the controller side (debug)
+        ws.addEventListener("message",msg=>{
+            console.log(msg.data)
+        })
     </script>
 </head>
 <body>
-    <button onclick="moveTurtleForward()">forward</button>
+    <button onclick="moveTurtleForwards()">forward</button>
+    <button onclick="rotateTurtleLeft()">turn left</button>
+    <button onclick="rotateTurtleRight()">turn right</button>
+    <button onclick="moveTurtleBackwards()">backward</button>
+    <button onclick="moveTurtleUp()">up</button>
+    <button onclick="moveTurtleDown()">down</button>
 
     <div>
         <input type="text" id="cmdBox" placeholder="Send a command">
